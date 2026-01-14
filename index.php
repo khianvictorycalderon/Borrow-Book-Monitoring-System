@@ -2,6 +2,12 @@
 
   require_once("db.php");
   
+  // If there is a user already logged in
+  if(isset($_SESSION["user_id"])) {
+    header("Location: /logs"); // Go to logs page (by default)
+    exit();
+  }
+
 ?>
 
 <!DOCTYPE html>
