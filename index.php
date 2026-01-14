@@ -23,14 +23,25 @@
   <body>
 
     <div class="min-h-screen w-full 
-        bg-neutral-50 text-neutral-900
-        dark:bg-neutral-900 dark:text-neutral-50
+        bg-neutral-900 text-neutral-50
         flex items-center justify-center
         ">
         
-        <div class="flex flex-col gap-2 text-center">
-            <h2 class="text-4xl font-bold text-center">Borrow Book Monitoring System</h2>
-            <p class="text-sm italic text-center">with PHP + Tailwind CSS + MySQL</p>
+        <div class="flex flex-col gap-2">
+            <h2 class="text-2xl font-bold text-center">Login</h2>
+            <form class="flex flex-col gap-2" method="POST" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+              <div class="flex flex-col gap-2 justify-center">
+                <label for="login_username">Username: </label>
+                <input class="p-2 rounded-md bg-neutral-200 text-neutral-800" id="login_username" name="login_username" type="text" placeholder="Enter your username...">
+              </div>
+              <div class="flex flex-col gap-2 justify-center">
+                <label for="login_password">Password: </label>
+                <input class="p-2 rounded-md bg-neutral-200 text-neutral-800" id="login_password" name="login_password" type="password" placeholder="Enter your password...">
+              </div>
+              <button class="rounded-md px-6 py-2 font-semibold bg-green-600 hover:bg-green-500 transition duration-300 mt-4">
+                Login
+              </button>
+            </form>
         </div>
         
     </div>
