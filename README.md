@@ -6,6 +6,11 @@ An internal web utility system that monitors and tracks who borrowed which book.
 - MySQL Server
 I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Server.
 
+## Previews
+
+**Home Screen**
+![Home Screen Preview](images/previews/homescreen.png)
+
 ## Setup
 1. Go to you XAMPP htdocs directory (usually in `C:\xampp\htdocs`, depending on where you installed your XAMPP)
 2. Clone this repository by running `git clone https://github.com/khianvictorycalderon/Borrow-Book-Monitoring-System.git`
