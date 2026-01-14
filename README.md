@@ -67,6 +67,7 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 - Admin default username is `admin`, and default password is `1234`.
 - After first login, change Admin password immediately in account settings!
 - Admin can now create moderator and staff accounts!
+- All roles can log books, this web system internal project was intended to be used in local network only.
 
 ## Roles
 - **ADMIN** - Can create moderator and staff account, can modify borrower data, and log borrowed or returned books. (ONE Admin account only!)
