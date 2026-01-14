@@ -2,6 +2,12 @@
 
   require_once("../db.php");
   
+  // If there are no logged user yet
+  if(!isset($_SESSION["user_id"])) {
+    header("Location: /"); // Go back to index page
+    exit();
+  }
+
 ?>
 
 <!DOCTYPE html>
