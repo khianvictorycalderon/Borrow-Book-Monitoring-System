@@ -21,7 +21,6 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         role ENUM('admin', 'moderator', 'staff') NOT NULL DEFAULT 'staff',
         username VARCHAR(200) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        email VARCHAR(255) UNIQUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
