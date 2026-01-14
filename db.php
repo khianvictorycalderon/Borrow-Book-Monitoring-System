@@ -153,3 +153,26 @@ function transactionalMySQLQuery(string $query, array $params = []) {
         return "Query error: " . $e->getMessage();
     }
 }
+
+// --------------------------------------------------------------
+// Auto create first admin account (runs only once)
+
+$check_users = transactionalMySQLQuery(
+    "SELECT COUNT(*) AS total FROM system_users"
+);
+
+if (is_string($check_users)) {
+    die("Error checking users: $check_users");
+}
+
+if ((int)$check_users[0]['total'] === 0) {
+    $create_admin = transactionalMySQLQuery(
+        "INSERT INTO system_users (first_name, last_name, role, username, password)
+         VALUES (?, ?, ?, ?, ?)",
+        ["System", "Admin", "admin", "admin", password_hash("1234", PASSWORD_DEFAULT)]
+    );
+
+    if ($create_admin !== true) {
+        die("Failed to create admin account: $create_admin");
+    }
+}
