@@ -8,7 +8,22 @@ document.querySelectorAll(".navbar").forEach(navbarEl => {
     { 
       label: "Books", 
       className: buttonClassName,
-      action: () => window.location.href = "/" 
+      action: () => window.location.href = "/books" 
+    },
+    { 
+      label: "Borrowers", 
+      className: buttonClassName,
+      action: () => window.location.href = "/borrowers" 
+    },
+    { 
+      label: "Logs", 
+      className: buttonClassName,
+      action: () => window.location.href = "/logs" 
+    },
+    { 
+      label: "Account", 
+      className: buttonClassName,
+      action: () => window.location.href = "/account" 
     },
     { 
       label: "Log Out", 
