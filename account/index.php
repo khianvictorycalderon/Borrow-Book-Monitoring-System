@@ -183,10 +183,10 @@
         <!-- Delete Account Section -->
         <?php if (!$sole_admin): ?>
         <div class="bg-neutral-800 p-6 rounded-2xl shadow-md">
-            <h2 class="text-xl font-semibold mb-4 text-red-400">Delete Account</h2>
+            <h2 class="text-xl font-semibold mb-4 text-red-400 text-center">Delete Account</h2>
             <form method="POST" onsubmit="return confirm('Are you sure you want to permanently delete your account? This action cannot be undone.');">
                 <button type="submit" name="delete_account"
-                        class="bg-red-600 hover:bg-red-500 transition px-4 py-2 rounded-lg font-semibold">
+                        class="bg-red-600 hover:bg-red-500 transition px-4 py-2 rounded-lg font-semibold w-full">
                     Delete My Account
                 </button>
             </form>
