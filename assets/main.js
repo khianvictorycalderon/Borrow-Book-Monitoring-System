@@ -26,6 +26,11 @@ document.querySelectorAll(".navbar").forEach(navbarEl => {
       action: () => window.location.href = "/account" 
     },
     { 
+      label: "Register", 
+      className: buttonClassName,
+      action: () => window.location.href = "/register" 
+    },
+    { 
       label: "Log Out", 
       className: buttonClassName,
       action: () => {
