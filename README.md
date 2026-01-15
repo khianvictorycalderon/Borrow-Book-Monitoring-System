@@ -56,13 +56,14 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         id INT PRIMARY KEY AUTO_INCREMENT,
         book_id INT NOT NULL,
         borrower_id INT NOT NULL,
+        logger_id INT NOT NULL,
         borrowed_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         returned_date TIMESTAMP NULL,
-        status ENUM('borrowed', 'returned', 'overdue') NOT NULL DEFAULT 'borrowed',
-        -- If book or system user was delete, log book stays, but displays "User Deleted", "Borrower Deleted", "Book Deleted"
-        FOREIGN KEY (logged_id) REFERENCES system_users(id), -- ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (book_id) REFERENCES books(id), -- ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY (borrower_id) REFERENCES borrowers(id), -- ON DELETE CASCADE ON UPDATE CASCADE
+        status ENUM('borrowed', 'returned') NOT NULL DEFAULT 'borrowed',
+        -- If book or system user was delete, log book stays, but displays User Deleted, Borrower Deleted, Book Deleted
+        FOREIGN KEY (logger_id) REFERENCES system_users(id),
+        FOREIGN KEY (book_id) REFERENCES books(id),
+        FOREIGN KEY (borrower_id) REFERENCES borrowers(id)
     );
 
     ```
