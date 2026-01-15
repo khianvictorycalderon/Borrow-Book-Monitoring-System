@@ -24,35 +24,47 @@
   $alert_message = "";
   $alert_class = "";
 
-  // Handle book logging
-  if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book_id'], $_POST['borrower_id'])) {
-      $book_id = trim($_POST['book_id']);
-      $borrower_id = trim($_POST['borrower_id']);
+     // Handle book logging
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['book_id'], $_POST['borrower_id'])) {
+        $book_id = trim($_POST['book_id']);
+        $borrower_id = trim($_POST['borrower_id']);
 
-      // Validate IDs exist
-      $book_check = transactionalMySQLQuery("SELECT id FROM books WHERE id = ?", [$book_id]);
-      $borrower_check = transactionalMySQLQuery("SELECT id FROM borrowers WHERE id = ?", [$borrower_id]);
+        // Validate IDs exist
+        $book_check = transactionalMySQLQuery("SELECT id, copies_available FROM books WHERE id = ?", [$book_id]);
+        $borrower_check = transactionalMySQLQuery("SELECT id FROM borrowers WHERE id = ?", [$borrower_id]);
 
-      if (count($book_check) === 0) {
-          $alert_message = "Selected book does not exist.";
-          $alert_class = "bg-red-600";
-      } elseif (count($borrower_check) === 0) {
-          $alert_message = "Selected borrower does not exist.";
-          $alert_class = "bg-red-600";
-      } else {
-          // Determine next action type for this book
-          $last_log_result = transactionalMySQLQuery(
-              "SELECT action_type FROM borrowed_books_log WHERE book_id = ? ORDER BY action_date DESC LIMIT 1",
-              [$book_id]
-          );
+        if (count($book_check) === 0) {
+            $alert_message = "Selected book does not exist.";
+            $alert_class = "bg-red-600";
+        } elseif (count($borrower_check) === 0) {
+            $alert_message = "Selected borrower does not exist.";
+            $alert_class = "bg-red-600";
+        } else {
+            $book = $book_check[0];
 
+            // Get last log for this borrower + book
+            $last_log_result = transactionalMySQLQuery(
+                "SELECT action_type FROM borrowed_books_log 
+                WHERE book_id = ? AND borrower_id = ? 
+                ORDER BY action_date DESC LIMIT 1",
+                [$book_id, $borrower_id]
+            );
+
+            // Determine next action type
             $next_action = (!count($last_log_result) || $last_log_result[0]['action_type'] === 'returned') ? 'borrowed' : 'returned';
 
+            // Update copies
             if ($next_action === 'borrowed') {
-                transactionalMySQLQuery(
-                    "UPDATE books SET copies_available = copies_available - 1 WHERE id = ? AND copies_available > 0",
-                    [$book_id]
-                );
+                if ($book['copies_available'] <= 0) {
+                    $alert_message = "Cannot borrow: no copies available.";
+                    $alert_class = "bg-red-600";
+                    $next_action = null; // abort
+                } else {
+                    transactionalMySQLQuery(
+                        "UPDATE books SET copies_available = copies_available - 1 WHERE id = ?",
+                        [$book_id]
+                    );
+                }
             } elseif ($next_action === 'returned') {
                 transactionalMySQLQuery(
                     "UPDATE books SET copies_available = copies_available + 1 WHERE id = ?",
@@ -61,20 +73,22 @@
             }
 
             // Insert log
-            $insert_result = transactionalMySQLQuery(
-                "INSERT INTO borrowed_books_log (book_id, borrower_id, logger_id, action_type) VALUES (?, ?, ?, ?)",
-                [$book_id, $borrower_id, $user_id, $next_action]
-            );
+            if ($next_action) {
+                $insert_result = transactionalMySQLQuery(
+                    "INSERT INTO borrowed_books_log (book_id, borrower_id, logger_id, action_type) VALUES (?, ?, ?, ?)",
+                    [$book_id, $borrower_id, $user_id, $next_action]
+                );
 
-            if ($insert_result === true) {
-                $alert_message = "Book logged successfully as " . ucfirst($next_action) . "!";
-                $alert_class = "bg-green-600";
-            } else {
-                $alert_message = "Error logging book: $insert_result";
-                $alert_class = "bg-red-600";
+                if ($insert_result === true) {
+                    $alert_message = "Book logged successfully as " . ucfirst($next_action) . "!";
+                    $alert_class = "bg-green-600";
+                } else {
+                    $alert_message = "Error logging book: $insert_result";
+                    $alert_class = "bg-red-600";
+                }
             }
-      }
-  }
+        }
+    }
 
   // Fetch all books & borrowers for logging
   $books_result = transactionalMySQLQuery("SELECT id, book_name FROM books ORDER BY book_name ASC");
