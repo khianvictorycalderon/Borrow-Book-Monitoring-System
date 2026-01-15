@@ -1,5 +1,6 @@
 <?php
 
+  session_start();
   require_once("../db.php");
   
   // If there are no logged user yet

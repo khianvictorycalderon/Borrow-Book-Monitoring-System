@@ -1,5 +1,6 @@
 <?php
 
+  session_start();
   require_once("db.php");
   
   // If there is a user already logged in
@@ -17,7 +18,31 @@
     if ($username === "" || $password === "") {
       $error = "Username and Password are required.";
     } else {
-      // Login logic here...
+
+      $login_attempt_result = transactionalMySQLQuery(
+          "SELECT id, password FROM system_users WHERE username = ?",
+          [$username]
+      );
+
+      // Check if user exists
+      if (count($login_attempt_result) === 0) {
+          $error = "Invalid username or password.";
+      } else {
+          $user = $login_attempt_result[0];
+
+          // Verify password
+          if (!password_verify($password, $user["password"])) {
+              $error = "Invalid username or password.";
+          } else {
+              // Login successful
+              session_regenerate_id(true);
+
+              $_SESSION["user_id"] = $user["id"];
+
+              header("Location: /logs");
+              exit();
+          }
+      }
     }
   }
 
@@ -36,11 +61,11 @@
     <script src="/assets/tailwind-3.4.17.js"></script>
     <script type="module" src="/assets/main.js"></script>
     
-    <?php if(isset($error) && $error) ?>
+    <?php if(isset($error) && $error) { ?>
       <script>
         alert("<?= $error ?>");
       </script>  
-    <?php ?>
+    <?php } ?>
     
     <title>Borrow Book Monitoring System</title>
 
