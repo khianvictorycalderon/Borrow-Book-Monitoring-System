@@ -16,8 +16,8 @@ document.querySelectorAll(".navbar").forEach(navbarEl => {
       action: () => {
 
         // Optional: clear session via PHP endpoint
-        fetch("/phps/logout.php").then(() => {
-          window.location.href = "/login";
+        fetch("/api/logout.php").then(() => {
+          window.location.href = "/";
         });
 
       }
