@@ -15,7 +15,7 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 1. Go to you XAMPP htdocs directory (usually in `C:\xampp\htdocs`, depending on where you installed your XAMPP)
 2. Clone this repository by running `git clone https://github.com/khianvictorycalderon/Borrow-Book-Monitoring-System.git`
 3. Start Apache and MySQL from XAMPP control panel.
-4. Go to your phpmyadmin panel and run this MySQL query:
+4. Go to your phpmyadmin panel, create a database named `borrow_book_monitor_db`, and run this MySQL query:
     ```sql
     
     -- Users table
