@@ -194,7 +194,7 @@
                       <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($b['description']) ?></td>
                       <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($b['created_by'] ?? 'User Deleted') ?></td>
                       <?php if (in_array($current_user['role'], ['admin', 'moderator'])): ?>
-                          <td class="px-4 py-2 border border-neutral-600 flex gap-2">
+                          <td class="px-4 py-2 border border-neutral-600 flex gap-2 justify-center">
                               <button class="edit_button bg-green-600 hover:bg-green-500 px-2 py-1 rounded text-sm font-semibold"
                                       data-id="<?= $b['id'] ?>"
                                       data-first_name="<?= htmlspecialchars($b['first_name'], ENT_QUOTES) ?>"
