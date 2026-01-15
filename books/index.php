@@ -177,7 +177,7 @@
                         <th class="px-4 py-2 border border-neutral-600 text-left">ID</th>
                         <th class="px-4 py-2 border border-neutral-600 text-left">Book Name</th>
                         <th class="px-4 py-2 border border-neutral-600 text-left">Author</th>
-                        <th class="px-4 py-2 border border-neutral-600 text-left">Copies</th>
+                        <th class="px-4 py-2 border border-neutral-600 text-left">Available Copies</th>
                         <th class="px-4 py-2 border border-neutral-600 text-left">Created By</th>
                         <?php if (in_array($role, ['admin', 'moderator'])): ?>
                             <th class="px-4 py-2 border border-neutral-600 text-left">Actions</th>
