@@ -1,3 +1,4 @@
+import { FooterComponent } from "../components/footer.js";
 import { NavBarComponent, attachNavBarActions } from "../components/navbar.js";
 
 document.querySelectorAll(".navbar").forEach(navbarEl => {
@@ -68,4 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   });
+
+  // Attach footer
+  const footers = document.querySelectorAll(".footer");
+  footers.forEach(footer => {
+    footer.innerHTML = FooterComponent;
+  });
+
 });
