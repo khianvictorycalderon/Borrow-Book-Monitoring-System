@@ -46,21 +46,33 @@
               [$book_id]
           );
 
-          $next_action = (!count($last_log_result) || $last_log_result[0]['action_type'] === 'returned') ? 'borrowed' : 'returned';
+            $next_action = (!count($last_log_result) || $last_log_result[0]['action_type'] === 'returned') ? 'borrowed' : 'returned';
 
-          // Insert log
-          $insert_result = transactionalMySQLQuery(
-              "INSERT INTO borrowed_books_log (book_id, borrower_id, logger_id, action_type) VALUES (?, ?, ?, ?)",
-              [$book_id, $borrower_id, $user_id, $next_action]
-          );
+            if ($next_action === 'borrowed') {
+                transactionalMySQLQuery(
+                    "UPDATE books SET copies_available = copies_available - 1 WHERE id = ? AND copies_available > 0",
+                    [$book_id]
+                );
+            } elseif ($next_action === 'returned') {
+                transactionalMySQLQuery(
+                    "UPDATE books SET copies_available = copies_available + 1 WHERE id = ?",
+                    [$book_id]
+                );
+            }
 
-          if ($insert_result === true) {
-              $alert_message = "Book logged successfully as " . ucfirst($next_action) . "!";
-              $alert_class = "bg-green-600";
-          } else {
-              $alert_message = "Error logging book: $insert_result";
-              $alert_class = "bg-red-600";
-          }
+            // Insert log
+            $insert_result = transactionalMySQLQuery(
+                "INSERT INTO borrowed_books_log (book_id, borrower_id, logger_id, action_type) VALUES (?, ?, ?, ?)",
+                [$book_id, $borrower_id, $user_id, $next_action]
+            );
+
+            if ($insert_result === true) {
+                $alert_message = "Book logged successfully as " . ucfirst($next_action) . "!";
+                $alert_class = "bg-green-600";
+            } else {
+                $alert_message = "Error logging book: $insert_result";
+                $alert_class = "bg-red-600";
+            }
       }
   }
 
