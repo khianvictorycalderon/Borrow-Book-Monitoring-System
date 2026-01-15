@@ -1,3 +1,40 @@
+import { NavBarComponent, attachNavBarActions } from "../components/navbar.js";
+
+document.querySelectorAll(".navbar").forEach(navbarEl => {
+
+  const buttonClassName = "text-neutral-100 hover:text-green-500 font-medium transition duration-300 cursor-pointer";
+
+  const navbarButtons = [
+    { 
+      label: "Books", 
+      className: buttonClassName,
+      action: () => window.location.href = "/" 
+    },
+    { 
+      label: "Log Out", 
+      className: buttonClassName,
+      action: () => {
+
+        // Optional: clear session via PHP endpoint
+        fetch("/phps/logout.php").then(() => {
+          window.location.href = "/login";
+        });
+
+      }
+    }
+  ];
+
+  navbarEl.innerHTML = NavBarComponent({
+    title: "Monitor Borrowed Books",
+    className: "!bg-neutral-800 !text-neutral-100",
+    buttons: navbarButtons,
+    buttonsAlignment: "right"
+  });
+
+  // Attach mobile toggle & button actions (must match buttons)
+  attachNavBarActions(navbarEl, navbarButtons);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("login_form");
 

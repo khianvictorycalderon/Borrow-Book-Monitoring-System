@@ -29,6 +29,8 @@
   </head>
   <body>
 
+    <div class="navbar"></div>
+
     <div class="min-h-screen w-full 
         bg-neutral-900 text-neutral-50
         flex items-center justify-center
