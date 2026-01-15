@@ -118,7 +118,7 @@
       <script type="module" src="/assets/main.js"></script>
       <title>Manage Account</title>
   </head>
-  <body class="min-h-screen bg-neutral-900 text-neutral-50 pt-24">
+  <body class="min-h-screen bg-neutral-900 text-neutral-50 pt-20">
 
     <div class="navbar"></div>
 
