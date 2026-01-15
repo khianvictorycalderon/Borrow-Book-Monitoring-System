@@ -32,11 +32,11 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 
     -- Borrowers table
     CREATE TABLE borrowers (
-        id INT PRIMARY KEY, -- Randomly generated in backend
+        id VARCHAR(20) PRIMARY KEY, -- Randomly generated alphanumeric ID (e.g., XXX-XXXX-XXX)
         first_name VARCHAR(200) NOT NULL,
-        middle_name VARCHAR(200),
+        middle_name VARCHAR(200), -- optional
         last_name VARCHAR(200) NOT NULL,
-        description TEXT,
+        description TEXT,         -- optional
         created_by INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
