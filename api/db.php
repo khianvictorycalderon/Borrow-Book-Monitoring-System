@@ -59,24 +59,29 @@ $db_port = 3306;
 */
 
 // UUID generator (manual, NOT cryptographically secure)
-function generate_uuid_v4_manual() {
-    $randomHex = function ($length) {
-        $hex = '';
-        for ($i = 0; $i < $length; $i++) {
-            $hex .= dechex(mt_rand(0, 15));
-        }
-        return $hex;
-    };
+function generate_uuid_v4_manual(string $pattern = "XXXX-XXXX-XX"): string {
+    $result = '';
 
-    return sprintf(
-        '%s-%s-4%s-%s%s-%s',
-        $randomHex(8),
-        $randomHex(4),
-        $randomHex(3),
-        dechex(mt_rand(8, 11)),
-        $randomHex(3),
-        $randomHex(12)
-    );
+    for ($i = 0; $i < strlen($pattern); $i++) {
+        $char = $pattern[$i];
+        if ($char === 'N') {
+            $result .= (string) mt_rand(0, 9);
+        } elseif ($char === 'A') {
+            $result .= chr(mt_rand(97, 122)); // a-z
+        } elseif ($char === 'X') {
+            // Either number or lowercase letter
+            if (mt_rand(0, 1) === 0) {
+                $result .= (string) mt_rand(0, 9);
+            } else {
+                $result .= chr(mt_rand(97, 122));
+            }
+        } else {
+            // Preserve fixed character (dash, underscore, etc.)
+            $result .= $char;
+        }
+    }
+
+    return $result;
 }
 
 function transactionalMySQLQuery(string $query, array $params = []) {
