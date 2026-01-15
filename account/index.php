@@ -118,11 +118,11 @@
       <script type="module" src="/assets/main.js"></script>
       <title>Manage Account</title>
   </head>
-  <body class="min-h-screen bg-neutral-900 text-neutral-50 pt-20">
+  <body class="bg-neutral-900 text-neutral-50 pt-20">
 
     <div class="navbar"></div>
 
-    <div class="max-w-3xl mx-auto p-6 flex flex-col gap-8">
+    <div class="min-h-screen max-w-3xl mx-auto p-6 flex flex-col gap-8">
 
         <?php if($alert_message): ?>
             <div class="<?= $alert_class ?> text-white p-3 rounded-lg text-center">
