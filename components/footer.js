@@ -1,5 +1,5 @@
 export const FooterComponent = `
-    <footer class="bg-neutral-900 text-neutral-50 pt-12 pb-8 w-full">
+    <footer class="bg-neutral-800 text-neutral-50 pt-12 pb-8 w-full">
         <div class="container mx-auto px-4">
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 text-center lg:text-left items-start">

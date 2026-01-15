@@ -72,8 +72,8 @@
   </head>
   <body>
 
-    <div class="min-h-screen bg-neutral-950 text-neutral-100 flex items-center justify-center">
-      <div class="w-full max-w-sm bg-neutral-900 rounded-2xl shadow-lg p-8">
+    <div class="min-h-screen bg-neutral-900 text-neutral-100 flex items-center justify-center">
+      <div class="w-full max-w-sm bg-neutral-800 rounded-2xl shadow-lg p-8">
         
         <h2 class="text-3xl font-semibold text-center mb-6">
           Welcome Back
