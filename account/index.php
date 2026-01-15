@@ -2,7 +2,6 @@
   session_start();
   require_once("../api/db.php");
 
-  // If not logged in, redirect
   if(!isset($_SESSION["user_id"])) {
       header("Location: /");
       exit();
@@ -12,7 +11,7 @@
 
   // Fetch current user info
   $user_result = transactionalMySQLQuery(
-      "SELECT id, first_name, last_name, username, role FROM system_users WHERE id = ?",
+      "SELECT id, first_name, last_name, username, role, password FROM system_users WHERE id = ?",
       [$user_id]
   );
 
@@ -29,8 +28,8 @@
   $sole_admin = ($user['role'] === 'admin' && (int)$admin_count_result[0]['total'] === 1);
 
   $alert_message = "";
+  $alert_class = "";
 
-  // Handle POST requests
   if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       // Account Details Update
@@ -40,6 +39,7 @@
 
           if ($first_name === "" || $last_name === "") {
               $alert_message = "First name and Last name cannot be empty.";
+              $alert_class = "bg-red-600";
           } else {
               $update_result = transactionalMySQLQuery(
                   "UPDATE system_users SET first_name = ?, last_name = ? WHERE id = ?",
@@ -47,10 +47,12 @@
               );
               if ($update_result === true) {
                   $alert_message = "Account details updated successfully!";
+                  $alert_class = "bg-green-600";
                   $user['first_name'] = $first_name;
                   $user['last_name'] = $last_name;
               } else {
                   $alert_message = "Error updating details: $update_result";
+                  $alert_class = "bg-red-600";
               }
           }
       }
@@ -63,10 +65,13 @@
 
           if ($old_password === "" || $new_password === "" || $confirm_password === "") {
               $alert_message = "All password fields are required.";
-          } elseif (!password_verify($old_password, $user_result[0]['password'] ?? '')) {
+              $alert_class = "bg-red-600";
+          } elseif (!password_verify($old_password, $user['password'])) {
               $alert_message = "Old password is incorrect.";
+              $alert_class = "bg-red-600";
           } elseif ($new_password !== $confirm_password) {
               $alert_message = "New password and confirmation do not match.";
+              $alert_class = "bg-red-600";
           } else {
               $hashed = password_hash($new_password, PASSWORD_DEFAULT);
               $pass_update = transactionalMySQLQuery(
@@ -75,8 +80,10 @@
               );
               if ($pass_update === true) {
                   $alert_message = "Password updated successfully!";
+                  $alert_class = "bg-green-600";
               } else {
                   $alert_message = "Error updating password: $pass_update";
+                  $alert_class = "bg-red-600";
               }
           }
       }
@@ -88,16 +95,15 @@
               [$user_id]
           );
           if ($delete_result === true) {
-              // Logout after deletion
               session_destroy();
               header("Location: /");
               exit();
           } else {
               $alert_message = "Error deleting account: $delete_result";
+              $alert_class = "bg-red-600";
           }
       }
   }
-
 ?>
 
 <!DOCTYPE html>
@@ -119,7 +125,7 @@
     <div class="max-w-3xl mx-auto p-6 flex flex-col gap-8">
 
         <?php if($alert_message): ?>
-            <div class="bg-green-600 text-white p-3 rounded-lg">
+            <div class="<?= $alert_class ?> text-white p-3 rounded-lg text-center">
                 <?= htmlspecialchars($alert_message) ?>
             </div>
         <?php endif; ?>
