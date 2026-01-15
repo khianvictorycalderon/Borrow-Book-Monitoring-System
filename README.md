@@ -32,11 +32,11 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 
     -- Borrowers table
     CREATE TABLE borrowers (
-        id VARCHAR(20) PRIMARY KEY, -- Randomly generated alphanumeric ID (e.g., XXX-XXXX-XXX)
+        id VARCHAR(50) PRIMARY KEY,
         first_name VARCHAR(200) NOT NULL,
-        middle_name VARCHAR(200), -- optional
+        middle_name VARCHAR(200),
         last_name VARCHAR(200) NOT NULL,
-        description TEXT,         -- optional
+        description TEXT,
         created_by INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -59,7 +59,7 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
     CREATE TABLE borrowed_books_log (
         id INT PRIMARY KEY AUTO_INCREMENT,
         book_id INT NOT NULL,
-        borrower_id INT NOT NULL,
+        borrower_id VARCHAR(50) NOT NULL, -- <-- matches borrowers.id
         logger_id INT NOT NULL,
         borrowed_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         returned_date TIMESTAMP NULL,
