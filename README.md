@@ -10,6 +10,11 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 
 **Home Screen**
 ![Home Screen Preview](images/previews/homescreen.png)
+![Book Page Preview](images/previews/books_page.png)
+![Borrower Page Preview](images/previews/borrower_page.png)
+![Log Page Preview](images/previews/logs_page.png)
+![Account Page Preview](images/previews/account_page.png)
+![Register Page Preview](images/previews/register_page.png)
 
 ## Setup
 1. Go to you XAMPP htdocs directory (usually in `C:\xampp\htdocs`, depending on where you installed your XAMPP)
