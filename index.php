@@ -101,6 +101,7 @@
                   text-neutral-100 placeholder-neutral-400
                   focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500
                   transition"
+            required
           />
         </div>
 
@@ -120,6 +121,7 @@
                   text-neutral-100 placeholder-neutral-400
                   focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500
                   transition"
+            required
           />
         </div>
 
