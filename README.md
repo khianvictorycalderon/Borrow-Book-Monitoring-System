@@ -37,8 +37,10 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         middle_name VARCHAR(200),
         last_name VARCHAR(200) NOT NULL,
         description TEXT,
+        created_by INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (created_by) REFERENCES system_users(id)
     );
 
     -- Books table
@@ -47,8 +49,10 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         book_name VARCHAR(200) NOT NULL,
         book_author VARCHAR(200) NOT NULL,
         copies_available INT NOT NULL DEFAULT 1,
+        created_by INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (created_by) REFERENCES system_users(id)
     );
 
     -- Borrowed books log table
@@ -60,7 +64,6 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         borrowed_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         returned_date TIMESTAMP NULL,
         status ENUM('borrowed', 'returned') NOT NULL DEFAULT 'borrowed',
-        -- If book or system user was delete, log book stays, but displays User Deleted, Borrower Deleted, Book Deleted
         FOREIGN KEY (logger_id) REFERENCES system_users(id),
         FOREIGN KEY (book_id) REFERENCES books(id),
         FOREIGN KEY (borrower_id) REFERENCES borrowers(id)
