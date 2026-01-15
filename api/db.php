@@ -8,57 +8,26 @@ $db_name = "borrow_book_monitor_db";
 $db_port = 3306;
 
 /*
-
-    This db.php file contains 2 essential functions for database management and database credentials:
-    1. generate_uuid_v4_manual - Generates a UUID v4–style string (not cryptographically secure)
-    2. transactionalMySQLQuery - Similar to pool.query in PostgreSQL. 
-       It opens a connection, starts a transaction, executes ONE query, then commits or rolls back automatically.
-
-    ------------------------------------------------------------------
-    SELECT Usage:
-    - Returns an array of rows on success
-    - Returns an error string on failure
-
-        $result = transactionalMySQLQuery(
-            "SELECT * FROM users WHERE username = ?",
-            ["johndoe"]
-        );
-
-        if (is_string($result)) {
-            echo "Error: $result";
-        } else {
-            print_r($result);
-        }
-
-    ------------------------------------------------------------------
-    INSERT / UPDATE / DELETE Usage:
-    - Returns true on success
-    - Returns an error string on failure
-
-        $result = transactionalMySQLQuery(
-            "INSERT INTO users (first_name, last_name, username, password)
-             VALUES (?, ?, ?, ?)",
-            ["John", "Doe", "johndoe", password_hash("password123", PASSWORD_DEFAULT)]
-        );
-
-        if ($result === true) {
-            echo "Insert successful!";
-        } else {
-            echo "Error: $result";
-        }
-
-    ------------------------------------------------------------------
-    NOTES:
-    - This function supports ONLY ONE SQL statement per call
-    - Multiple statements (multi-query) are intentionally NOT supported
-    - Prepared statements are used automatically when parameters are provided
-    - Each call is wrapped in a database transaction
-    - For multiple queries, call this function multiple times or implement
-      a dedicated transaction helper
-
+|--------------------------------------------------------------------------
+| Custom ID / UUID-style generator
+|--------------------------------------------------------------------------
+|
+| Generates a random string based on a pattern.
+| Not a true UUID v4 and NOT cryptographically secure.
+|
+| Pattern symbols:
+|  - 'N' → random digit (0-9)
+|  - 'A' → random lowercase letter (a-z)
+|  - 'X' → random digit or lowercase letter (0-9, a-z)
+|  - Any other character → preserved as-is (e.g., dashes, underscores)
+|
+| Default pattern: "XXXX-XXXX-XX"
+|
+| Example usage:
+|  generate_uuid_v4_manual();          // e.g., "a3k9-4d7f-x2"
+|  generate_uuid_v4_manual("NNAA-XX"); // e.g., "47bg-a3"
+|
 */
-
-// UUID generator (manual, NOT cryptographically secure)
 function generate_uuid_v4_manual(string $pattern = "XXXX-XXXX-XX"): string {
     $result = '';
 
@@ -84,6 +53,38 @@ function generate_uuid_v4_manual(string $pattern = "XXXX-XXXX-XX"): string {
     return $result;
 }
 
+/*
+|--------------------------------------------------------------------------
+| transactionalMySQLQuery
+|--------------------------------------------------------------------------
+|
+| Executes a single MySQL query inside a transaction, similar to pool.query in PostgreSQL.
+|
+| Features:
+|  - Supports SELECT, INSERT, UPDATE, DELETE
+|  - Prepared statements automatically if parameters are provided
+|  - Each query runs inside a transaction and commits or rolls back automatically
+|  - Prevents multi-statement queries
+|
+| Usage:
+|
+| SELECT:
+|   $result = transactionalMySQLQuery(
+|       "SELECT * FROM users WHERE username = ?",
+|       ["johndoe"]
+|   );
+|   if (is_string($result)) echo "Error: $result";
+|   else print_r($result);
+|
+| INSERT / UPDATE / DELETE:
+|   $result = transactionalMySQLQuery(
+|       "INSERT INTO users (first_name, last_name) VALUES (?, ?)",
+|       ["John", "Doe"]
+|   );
+|   if ($result === true) echo "Success!";
+|   else echo "Error: $result";
+|
+*/
 function transactionalMySQLQuery(string $query, array $params = []) {
     global $db_host, $db_user, $db_pass, $db_name, $db_port;
 
@@ -98,7 +99,11 @@ function transactionalMySQLQuery(string $query, array $params = []) {
     }
 
     try {
-        $mysqli->begin_transaction();
+        // Decide if transaction is needed (skip for simple SELECT)
+        $is_select = preg_match('/^\s*SELECT/i', $query);
+        if (!$is_select) {
+            $mysqli->begin_transaction();
+        }
 
         if (!empty($params)) {
             $stmt = $mysqli->prepare($query);
@@ -106,6 +111,7 @@ function transactionalMySQLQuery(string $query, array $params = []) {
                 throw new Exception("Prepare failed: " . $mysqli->error);
             }
 
+            // Bind types automatically
             $types = "";
             foreach ($params as $p) {
                 if (is_int($p)) $types .= "i";
@@ -119,11 +125,10 @@ function transactionalMySQLQuery(string $query, array $params = []) {
                 throw new Exception("Execution failed: " . $stmt->error);
             }
 
-            if (stripos(trim($query), "SELECT") === 0) {
+            if ($is_select) {
                 $res = $stmt->get_result();
                 $data = $res->fetch_all(MYSQLI_ASSOC);
                 $stmt->close();
-                $mysqli->commit();
                 $mysqli->close();
                 return $data;
             }
@@ -140,24 +145,24 @@ function transactionalMySQLQuery(string $query, array $params = []) {
             }
 
             if ($res === true) {
-                $mysqli->commit();
+                if (!$is_select) $mysqli->commit();
                 $mysqli->close();
                 return true;
             }
 
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
-            $mysqli->commit();
             $mysqli->close();
             return $data;
         }
 
     } catch (Exception $e) {
-        $mysqli->rollback();
+        if (!$is_select) $mysqli->rollback();
         $mysqli->close();
         return "Query error: " . $e->getMessage();
     }
 }
+
 
 // --------------------------------------------------------------
 // Auto create first admin account if no admin exists
