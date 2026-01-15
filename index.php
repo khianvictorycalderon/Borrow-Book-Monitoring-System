@@ -8,6 +8,19 @@
     exit();
   }
 
+  // Check for POST method
+  if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $username = trim($_POST["login_username"] ?? "");
+    $password = trim($_POST["login_password"] ?? "");
+
+    if ($username === "" || $password === "") {
+      $error = "Username and password are required.";
+    } else {
+      // Login logic here...
+    }
+  }
+
 ?>
 
 <!DOCTYPE html>
