@@ -45,7 +45,7 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 
     -- Books table
     CREATE TABLE books (
-        id INT PRIMARY KEY AUTO_INCREMENT,
+        id VARCHAR(50) PRIMARY KEY,
         book_name VARCHAR(200) NOT NULL,
         book_author VARCHAR(200) NOT NULL,
         copies_available INT NOT NULL DEFAULT 1,
@@ -58,8 +58,8 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
     -- Borrowed books log table
     CREATE TABLE borrowed_books_log (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        book_id INT NOT NULL,
-        borrower_id VARCHAR(50) NOT NULL, -- <-- matches borrowers.id
+        book_id VARCHAR(50) NOT NULL,
+        borrower_id VARCHAR(50) NOT NULL,
         logger_id INT NOT NULL,
         borrowed_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         returned_date TIMESTAMP NULL,
