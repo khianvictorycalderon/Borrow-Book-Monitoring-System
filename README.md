@@ -39,8 +39,7 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         description TEXT,
         created_by INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (created_by) REFERENCES system_users(id)
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
     -- Books table
@@ -51,21 +50,17 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         copies_available INT NOT NULL DEFAULT 1,
         created_by INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (created_by) REFERENCES system_users(id)
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
     -- Borrowed books log table
     CREATE TABLE borrowed_books_log (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        book_id VARCHAR(50) NOT NULL,
-        borrower_id VARCHAR(50) NOT NULL,
-        logger_id INT NOT NULL,
+        book_id VARCHAR(50),
+        borrower_id VARCHAR(50),
+        logger_id INT,
         action_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        action_type ENUM('borrowed', 'returned') NOT NULL,
-        FOREIGN KEY (logger_id) REFERENCES system_users(id),
-        FOREIGN KEY (book_id) REFERENCES books(id),
-        FOREIGN KEY (borrower_id) REFERENCES borrowers(id)
+        action_type ENUM('borrowed', 'returned') NOT NULL
     );
 
     ```
