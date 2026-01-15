@@ -15,7 +15,7 @@
     $password = trim($_POST["login_password"] ?? "");
 
     if ($username === "" || $password === "") {
-      $error = "Username and password are required.";
+      $error = "Username and Password are required.";
     } else {
       // Login logic here...
     }
@@ -35,6 +35,12 @@
     <link rel="icon" type="image/png+jpg" href="/images/icons/book-borrow-monitoring-system.png">
     <script src="/assets/tailwind-3.4.17.js"></script>
     <script type="module" src="/assets/main.js"></script>
+    
+    <?php if(isset($error) && $error) ?>
+      <script>
+        alert("<?= $error ?>");
+      </script>  
+    <?php ?>
     
     <title>Borrow Book Monitoring System</title>
 
