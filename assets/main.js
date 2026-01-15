@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (username.trim() === "" || password.trim() === "") {
       alert("Please fill in all fields");
-      event.preventDefault(); // ❌ stop form submission
+      event.preventDefault();
       return;
     }
-    
+
   });
 });
