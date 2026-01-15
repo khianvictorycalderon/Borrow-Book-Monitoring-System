@@ -1,7 +1,7 @@
 <?php
 
   session_start();
-  require_once("../db.php");
+  require_once("../api/db.php");
   
   // If there are no logged user yet
   if(!isset($_SESSION["user_id"])) {
