@@ -96,7 +96,7 @@
                   <input type="text" name="book_author" placeholder="Book Author" value="<?= htmlspecialchars($book_author ?? '') ?>"
                         class="px-4 py-2 rounded-lg bg-neutral-700 text-neutral-100 border border-neutral-600 focus:outline-none focus:ring-2 focus:ring-green-500" required>
                   
-                  <input type="number" name="copies_available" placeholder="Copies Available" min="1" value="<?= htmlspecialchars($copies_available ?? 1) ?>"
+                  <input type="number" name="copies_available" placeholder="Copies Available" min="1"
                         class="px-4 py-2 rounded-lg bg-neutral-700 text-neutral-100 border border-neutral-600 focus:outline-none focus:ring-2 focus:ring-green-500" required>
 
                   <button type="submit" name="add_book"
@@ -110,35 +110,68 @@
           <!-- Books List -->
           <div class="bg-neutral-800 p-6 rounded-2xl shadow-md overflow-x-auto">
               <h2 class="text-xl font-semibold mb-4">Books List</h2>
-              <table class="min-w-full table-auto border-collapse border border-neutral-700">
-                  <thead>
-                      <tr class="bg-neutral-700">
-                          <th class="px-4 py-2 border border-neutral-600 text-left">ID</th>
-                          <th class="px-4 py-2 border border-neutral-600 text-left">Book Name</th>
-                          <th class="px-4 py-2 border border-neutral-600 text-left">Author</th>
-                          <th class="px-4 py-2 border border-neutral-600 text-left">Copies</th>
-                          <th class="px-4 py-2 border border-neutral-600 text-left">Created By</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <?php foreach($books_result as $book): ?>
-                      <tr class="hover:bg-neutral-700">
-                          <td class="px-4 py-2 border border-neutral-600"><?= $book['id'] ?></td>
-                          <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($book['book_name']) ?></td>
-                          <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($book['book_author']) ?></td>
-                          <td class="px-4 py-2 border border-neutral-600"><?= $book['copies_available'] ?></td>
-                          <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($book['created_by'] ?? 'User Deleted') ?></td>
-                      </tr>
-                      <?php endforeach; ?>
-                      <?php if(count($books_result) === 0): ?>
-                      <tr>
-                          <td colspan="5" class="px-4 py-2 text-center text-gray-400">No books found.</td>
-                      </tr>
-                      <?php endif; ?>
-                  </tbody>
-              </table>
-          </div>
 
+              <form method="POST" class="flex flex-col gap-2">
+                  <table class="min-w-full table-auto border-collapse border border-neutral-700">
+                      <thead>
+                          <tr class="bg-neutral-700">
+                              <th class="px-4 py-2 border border-neutral-600 text-left">ID</th>
+                              <th class="px-4 py-2 border border-neutral-600 text-left">Book Name</th>
+                              <th class="px-4 py-2 border border-neutral-600 text-left">Author</th>
+                              <th class="px-4 py-2 border border-neutral-600 text-left">Copies</th>
+                              <th class="px-4 py-2 border border-neutral-600 text-left">Created By</th>
+                              <?php if(in_array($current_user['role'], ['admin', 'moderator'])): ?>
+                                  <th class="px-4 py-2 border border-neutral-600 text-left">Actions</th>
+                              <?php endif; ?>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <?php foreach($books_result as $book): ?>
+                          <tr class="hover:bg-neutral-700">
+                              <td class="px-4 py-2 border border-neutral-600"><?= $book['id'] ?></td>
+                              
+                              <!-- Editable fields for admin/moderator -->
+                              <?php if(in_array($current_user['role'], ['admin', 'moderator'])): ?>
+                                  <td class="px-4 py-2 border border-neutral-600">
+                                      <input type="text" name="book_name[<?= $book['id'] ?>]" value="<?= htmlspecialchars($book['book_name']) ?>"
+                                          class="w-full px-2 py-1 rounded bg-neutral-700 text-neutral-100 border border-neutral-600">
+                                  </td>
+                                  <td class="px-4 py-2 border border-neutral-600">
+                                      <input type="text" name="book_author[<?= $book['id'] ?>]" value="<?= htmlspecialchars($book['book_author']) ?>"
+                                          class="w-full px-2 py-1 rounded bg-neutral-700 text-neutral-100 border border-neutral-600">
+                                  </td>
+                                  <td class="px-4 py-2 border border-neutral-600">
+                                      <input type="number" name="copies_available[<?= $book['id'] ?>]" min="1" value="<?= $book['copies_available'] ?>"
+                                          class="w-full px-2 py-1 rounded bg-neutral-700 text-neutral-100 border border-neutral-600">
+                                  </td>
+                                  <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($book['created_by'] ?? 'User Deleted') ?></td>
+                                  <td class="px-4 py-2 border border-neutral-600">
+                                      <button type="submit" name="update_book[<?= $book['id'] ?>]"
+                                              class="bg-green-600 hover:bg-green-500 px-2 py-1 rounded text-sm font-semibold">
+                                          Save
+                                      </button>
+                                  </td>
+                              <?php else: ?>
+                                  <!-- Staff view only -->
+                                  <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($book['book_name']) ?></td>
+                                  <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($book['book_author']) ?></td>
+                                  <td class="px-4 py-2 border border-neutral-600"><?= $book['copies_available'] ?></td>
+                                  <td class="px-4 py-2 border border-neutral-600"><?= htmlspecialchars($book['created_by'] ?? 'User Deleted') ?></td>
+                              <?php endif; ?>
+                          </tr>
+                          <?php endforeach; ?>
+                          <?php if(count($books_result) === 0): ?>
+                          <tr>
+                              <td colspan="<?= in_array($current_user['role'], ['admin', 'moderator']) ? 6 : 5 ?>" class="px-4 py-2 text-center text-gray-400">
+                                  No books found.
+                              </td>
+                          </tr>
+                          <?php endif; ?>
+                      </tbody>
+                  </table>
+              </form>
+          </div>
+          
       </div>
 
       <div class="footer"></div>
