@@ -61,9 +61,8 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
         book_id VARCHAR(50) NOT NULL,
         borrower_id VARCHAR(50) NOT NULL,
         logger_id INT NOT NULL,
-        borrowed_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        returned_date TIMESTAMP NULL,
-        status ENUM('borrowed', 'returned') NOT NULL DEFAULT 'borrowed',
+        action_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        action_type ENUM('borrowed', 'returned') NOT NULL,
         FOREIGN KEY (logger_id) REFERENCES system_users(id),
         FOREIGN KEY (book_id) REFERENCES books(id),
         FOREIGN KEY (borrower_id) REFERENCES borrowers(id)
