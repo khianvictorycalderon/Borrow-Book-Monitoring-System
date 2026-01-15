@@ -38,6 +38,7 @@
         method="POST" 
         action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>"
         class="space-y-5"
+        id="login_form"
       >
         
         <div class="space-y-1">
