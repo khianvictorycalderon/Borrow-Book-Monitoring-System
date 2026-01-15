@@ -8,7 +8,6 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 
 ## Previews
 
-**Home Screen**
 ![Home Screen Preview](images/previews/homescreen.png)
 ![Book Page Preview](images/previews/books_page.png)
 ![Borrower Page Preview](images/previews/borrower_page.png)
