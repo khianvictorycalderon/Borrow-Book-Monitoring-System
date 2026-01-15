@@ -162,7 +162,7 @@ $check_admin = transactionalMySQLQuery(
 );
 
 if (is_string($check_admin)) {
-    die("Error checking admin users: $check_admin");
+    die("<h1>Error checking admin users: $check_admin</h1>");
 }
 
 // If no admin exists, create the default admin
@@ -174,6 +174,6 @@ if ((int)$check_admin[0]['total'] === 0) {
     );
 
     if ($create_admin !== true) {
-        die("Failed to create admin account: $create_admin");
+        die("<h1>Failed to create admin account: $create_admin</h1>");
     }
 }

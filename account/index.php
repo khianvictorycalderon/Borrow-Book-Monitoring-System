@@ -16,7 +16,7 @@
   );
 
   if (is_string($user_result) || count($user_result) === 0) {
-      die("User not found: " . (is_string($user_result) ? $user_result : ""));
+      die("<h1>User not found: " . (is_string($user_result) ? $user_result : "" . "</h1>"));
   }
 
   $user = $user_result[0];

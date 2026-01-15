@@ -17,14 +17,14 @@
   );
 
   if (is_string($current_user) || count($current_user) === 0) {
-      die("User not found: " . (is_string($current_user) ? $current_user : ""));
+      die("<h1>User not found: " . (is_string($current_user) ? $current_user : "" . "</h1>"));
   }
 
   $current_user = $current_user[0];
 
   // Only admin can access registration
   if ($current_user['role'] !== 'admin') {
-      die("Access denied: Only admin can create new users.");
+      die("<h1>Access denied: Only admin can create new users.</h1>");
   }
 
   $alert_message = "";
