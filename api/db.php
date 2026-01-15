@@ -155,17 +155,18 @@ function transactionalMySQLQuery(string $query, array $params = []) {
 }
 
 // --------------------------------------------------------------
-// Auto create first admin account (runs only once)
+// Auto create first admin account if no admin exists
 
-$check_users = transactionalMySQLQuery(
-    "SELECT COUNT(*) AS total FROM system_users"
+$check_admin = transactionalMySQLQuery(
+    "SELECT COUNT(*) AS total FROM system_users WHERE role = 'admin'"
 );
 
-if (is_string($check_users)) {
-    die("Error checking users: $check_users");
+if (is_string($check_admin)) {
+    die("Error checking admin users: $check_admin");
 }
 
-if ((int)$check_users[0]['total'] === 0) {
+// If no admin exists, create the default admin
+if ((int)$check_admin[0]['total'] === 0) {
     $create_admin = transactionalMySQLQuery(
         "INSERT INTO system_users (first_name, last_name, role, username, password)
          VALUES (?, ?, ?, ?, ?)",
