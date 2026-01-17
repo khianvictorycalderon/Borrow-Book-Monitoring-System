@@ -19,16 +19,6 @@ export const FooterComponent = `
                 </p>
             </div>
 
-            <!-- Reference (Right Side on lg, bottom on mobile) -->
-            <div class="space-y-4 lg:ml-auto">
-                <h3 class="text-lg font-semibold">Reference</h3>
-                <p class="not-italic text-gray-400 mt-4">
-                <a href="https://github.com/khianvictorycalderon/Borrow-Book-Monitoring-System" target="_blank" title="Project GitHub Source Code">
-                    Project Source Code
-                </a>
-                </p>
-            </div>
-
             </div>
 
             <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-center md:justify-between text-center md:text-left">
