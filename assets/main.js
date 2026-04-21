@@ -29,27 +29,27 @@ document.addEventListener("DOMContentLoaded", () => {
       { 
         label: "Books", 
         className: buttonClassName,
-        action: () => window.location.href = "/books" 
+        action: () => window.location.href = "../books" 
       },
       { 
         label: "Borrowers", 
         className: buttonClassName,
-        action: () => window.location.href = "/borrowers" 
+        action: () => window.location.href = "../borrowers" 
       },
       { 
         label: "Logs", 
         className: buttonClassName,
-        action: () => window.location.href = "/logs" 
+        action: () => window.location.href = "../logs" 
       },
       { 
         label: "Account", 
         className: buttonClassName,
-        action: () => window.location.href = "/account" 
+        action: () => window.location.href = "../account" 
       },
       { 
         label: "Register", 
         className: buttonClassName,
-        action: () => window.location.href = "/register" 
+        action: () => window.location.href = "../register" 
       },
       { 
         label: "Log Out", 
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         action: () => {
 
           fetch("/api/logout.php").then(() => {
-            window.location.href = "/";
+            window.location.href = "../";
           });
 
         }
