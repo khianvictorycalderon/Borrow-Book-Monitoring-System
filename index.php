@@ -5,7 +5,7 @@
   
   // If there is a user already logged in
   if(isset($_SESSION["user_id"])) {
-    header("Location: /logs"); // Go to logs page (by default)
+    header("Location: ./logs"); // Go to logs page (by default)
     exit();
   }
 
@@ -39,7 +39,7 @@
 
               $_SESSION["user_id"] = $user["id"];
 
-              header("Location: /logs");
+              header("Location: ./logs");
               exit();
           }
       }
