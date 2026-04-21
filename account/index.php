@@ -113,9 +113,9 @@
       <meta http-equiv='expires' content='0'> 
       <meta http-equiv='pragma' content='no-cache'>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="icon" type="image/png+jpg" href="/images/icons/book-borrow-monitoring-system.png">
-      <script src="/assets/tailwind-3.4.17.js"></script>
-      <script type="module" src="/assets/main.js"></script>
+      <link rel="icon" type="image/png+jpg" href="../images/icons/book-borrow-monitoring-system.png">
+      <script src="../assets/tailwind-3.4.17.js"></script>
+      <script type="module" src="../assets/main.js"></script>
       <title>Manage Account</title>
   </head>
   <body class="bg-neutral-900 text-neutral-50 pt-20">
