@@ -82,3 +82,6 @@ I recommend using XAMPP as it comes with built-in Apache for PHP and MySQL Serve
 - **ADMIN** - Can create moderator and staff account, can modify borrower data, and log borrowed or returned books. (ONE Admin account only!)
 - **MODERATOR** - Cannot create moderator and staff account, can modify borrower data, log borrowed or returned books.
 - **STAFF** - Cannot create moderator and staff account, cannot modify borrower data, can only log borrowed or returned books.
+
+## Update (4/22/2026):
+- Fixed not working with `localhost/Borrow-Book-Monitoring-System` by migrating from absolute path to relative path.
