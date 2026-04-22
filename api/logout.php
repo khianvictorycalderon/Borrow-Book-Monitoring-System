@@ -21,13 +21,13 @@ if (ini_get("session.use_cookies")) {
 // Destroy the session
 session_destroy();
 
-// Redirect to login page using the app's root directory
-// __DIR__ is /path/to/htdocs/Borrow-Book-Monitoring-System/api
-// We go one level up to get the app root, then build a URL from SCRIPT_NAME
-$script_parts = explode('/', trim($_SERVER['SCRIPT_NAME'], '/'));
-// e.g. ["Borrow-Book-Monitoring-System", "api", "logout.php"]
-// The app root segment is $script_parts[0]
-$app_root = '/' . $script_parts[0];
+// This file lives at: <app-root>/api/logout.php
+// dirname(__FILE__)      => <app-root>/api
+// dirname(dirname(...))  => <app-root>
+// Subtract DOCUMENT_ROOT to get the URL-relative app path.
+$doc_root  = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+$app_root  = rtrim(str_replace('\\', '/', dirname(dirname(__FILE__))), '/');
+$app_path  = str_replace($doc_root, '', $app_root); // e.g. "/Borrow-Book-Monitoring-System"
 
-header("Location: " . $app_root . "/");
+header("Location: " . $app_path . "/");
 exit();
