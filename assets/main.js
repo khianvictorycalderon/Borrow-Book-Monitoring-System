@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         className: buttonClassName,
         action: () => {
 
-          fetch("/api/logout.php").then(() => {
+          fetch("./api/logout.php").then(() => {
             window.location.href = "../";
           });
 
